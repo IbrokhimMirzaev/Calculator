@@ -30,6 +30,9 @@
         android:layout_marginTop="16dp"
         android:text="0"
         android:maxLines="1"
+        android:autoSizeMaxTextSize="90sp"
+        android:autoSizeMinTextSize="60sp"
+        android:autoSizeTextType="uniform"
         style="@style/text_style2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text1" />
@@ -65,6 +68,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/plusMinus"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="16dp"
