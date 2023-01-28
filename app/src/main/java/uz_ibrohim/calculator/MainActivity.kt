@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var plus: Button
     private lateinit var minus: Button
 
-    private lateinit var plusMinus: Button
+    private lateinit var power: Button
 
     private lateinit var oper: TextView
     private lateinit var result: TextView
@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var isPoint = true
     private var isSymbol = false
     private var isPercent = false
+    private var isPower = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +63,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 isPoint = false
                 isSymbol = false
                 isPercent = false
+            }
+        }
+
+        power.setOnClickListener {
+            if (isPower) {
+                oper.text = oper.text.toString() + "^"
+                isPower = false
+                isPercent = false
+                isSymbol = false
             }
         }
 
@@ -137,7 +147,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         multiply = findViewById(R.id.multiply)
         plus = findViewById(R.id.plus)
         minus = findViewById(R.id.minus)
-        plusMinus = findViewById(R.id.plusMinus)
+        power = findViewById(R.id.power)
 
         switchBtn = findViewById(R.id.themeSwitcher)
     }
@@ -153,6 +163,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         result.text = calculate()
         isSymbol = true
         isPercent = true
+        isPower = true
     }
 
 
@@ -162,6 +173,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         var i = 0
         var j = 0
         var f = 0
+        var p = 0
+
+        while (p < myList.size) {
+            if (myList[p].toString() == "^") {
+                res = Math.pow((myList[p - 1].toString().toDouble()), (myList[p + 1].toString().toDouble()))
+                replace(p, myList)
+                myList.add(p - 1, res)
+                p -= 2
+            }
+            p++
+        }
 
         while (f < myList.size) {
             if (myList[f].toString() == "%") {
