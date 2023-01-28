@@ -94,6 +94,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 if (!oper.text[oper.text.length - 1].isDigit()) {
                     isSymbol = true
+                    isPower = true
+                    isPercent = true
                 }
                 oper.text = oper.text.substring(0, oper.text.length - 1)
             }
