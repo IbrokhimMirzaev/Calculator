@@ -244,7 +244,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             res = myList[0].toString()
         }
 
-        return res.toString()
+        return if (res.toString().toDouble() - res.toString().toDouble().toInt() == 0.0){
+            (res.toString().toDouble()).toInt().toString()
+        } else {
+            res.toString()
+        }
     }
 
     private fun clear() {
@@ -253,6 +257,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         isPoint = true
         isSymbol = false
         isPercent = false
+        isPower = true
     }
 
     private fun replace(i: Int, myList: MutableList<Any>) {
