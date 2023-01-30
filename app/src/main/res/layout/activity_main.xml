@@ -77,10 +77,10 @@
                 android:insetBottom="0dp"
                 app:cornerRadius="24dp"
                 style="@style/btn_light"
-                app:icon="@drawable/power"
+                app:icon="@drawable/plusminus"
                 app:iconSize="40dp"
                 android:textAlignment="center"
-                app:iconGravity="textEnd" />
+                app:iconGravity="textStart" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/percent"
@@ -298,6 +298,7 @@
                 app:iconGravity="textStart" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/equals"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var minus: Button
 
     private lateinit var power: Button
+    private lateinit var equals: Button
 
     private lateinit var oper: TextView
     private lateinit var result: TextView
@@ -66,23 +67,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        power.setOnClickListener {
-            if (isPower) {
-                oper.text = oper.text.toString() + "^"
-                isPower = false
-                isPercent = false
-                isSymbol = false
-            }
-        }
-
-        percent.setOnClickListener {
-            if (isPercent) {
-                oper.text = oper.text.toString() + "%"
-                isPercent = false
-                isSymbol = false
-            }
-        }
-
         clear.setOnClickListener { clear() }
 
         delete.setOnClickListener {
@@ -115,6 +99,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         multiply.setOnClickListener { addSymbol(multiply.text.toString()) }
         plus.setOnClickListener { addSymbol(plus.text.toString()) }
         minus.setOnClickListener { addSymbol(minus.text.toString()) }
+        power.setOnClickListener { addSymbol("^") }
+        percent.setOnClickListener { addSymbol("%") }
 
         switchBtn.setOnClickListener {
             if (switchBtn.isChecked) {
@@ -122,6 +108,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             }
+        }
+
+        equals.setOnClickListener {
+            oper.text = result.text.toString()
+
+            isPoint = !oper.text.contains('.')
+            isSymbol = true
+            isPower = true
+            isPercent = true
         }
     }
 
@@ -150,6 +145,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         plus = findViewById(R.id.plus)
         minus = findViewById(R.id.minus)
         power = findViewById(R.id.power)
+        equals = findViewById(R.id.equals)
 
         switchBtn = findViewById(R.id.themeSwitcher)
     }
@@ -179,7 +175,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         while (p < myList.size) {
             if (myList[p].toString() == "^") {
-                res = Math.pow((myList[p - 1].toString().toDouble()), (myList[p + 1].toString().toDouble()))
+                res = Math.pow(
+                    (myList[p - 1].toString().toDouble()),
+                    (myList[p + 1].toString().toDouble())
+                )
                 replace(p, myList)
                 myList.add(p - 1, res)
                 p -= 2
@@ -189,7 +188,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         while (f < myList.size) {
             if (myList[f].toString() == "%") {
-                res = (myList[f - 1].toString().toDouble()) / 100 * (myList[f + 1].toString().toDouble())
+                res = (myList[f - 1].toString().toDouble()) / 100 * (myList[f + 1].toString()
+                    .toDouble())
                 replace(f, myList)
                 myList.add(f - 1, res)
                 f -= 2
@@ -202,14 +202,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             while (i < myList.size) {
                 if ((myList[i].toString() == "×") || (myList[i].toString() == "÷")) {
                     if (myList[i].toString() == "×") {
-                        res = (myList[i - 1].toString().toDouble()) * (myList[i + 1].toString()
-                            .toDouble())
+                        res = (myList[i - 1].toString().toDouble()) * (myList[i + 1].toString().toDouble())
                         replace(i, myList)
                         myList.add(i - 1, res)
                         i -= 2
                     } else {
-                        res = (myList[i - 1].toString().toDouble()) / (myList[i + 1].toString()
-                            .toDouble())
+                        res = (myList[i - 1].toString().toDouble()) / (myList[i + 1].toString().toDouble())
                         replace(i, myList)
                         myList.add(i - 1, res)
                         i -= 2
@@ -220,14 +218,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             while (j < myList.size) {
                 if ((myList[j].toString() == "+") || (myList[j].toString() == "–")) {
                     if (myList[j].toString() == "+") {
-                        res = (myList[j - 1].toString().toDouble()) + (myList[j + 1].toString()
-                            .toDouble())
+                        res = (myList[j - 1].toString().toDouble()) + (myList[j + 1].toString().toDouble())
                         replace(j, myList)
                         myList.add(j - 1, res)
                         j -= 2
                     } else {
-                        res = (myList[j - 1].toString().toDouble()) - (myList[j + 1].toString()
-                            .toDouble())
+                        res = (myList[j - 1].toString().toDouble()) - (myList[j + 1].toString().toDouble())
                         replace(j, myList)
                         myList.add(j - 1, res)
                         j -= 2
@@ -244,7 +240,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             res = myList[0].toString()
         }
 
-        return if (res.toString().toDouble() - res.toString().toDouble().toInt() == 0.0){
+        return if (res.toString().toDouble() - res.toString().toDouble().toInt() == 0.0) {
             (res.toString().toDouble()).toInt().toString()
         } else {
             res.toString()
@@ -283,20 +279,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         var list = mutableListOf<Any>()
 
         var temp = ""
+
+        if (operText[0] == '-') {
+            temp = "-"
+        }
+
         for (i in operText) {
             if (i.isDigit() || i == '.') {
                 temp += i
-            } else {
-                list.add(temp)
-                list.add(i)
-                temp = ""
+            }
+            else {
+                if (temp != "-") {
+                    list.add(temp)
+                    list.add(i)
+                    temp = ""
+                }
             }
         }
         if (temp.isNotEmpty()) {
             list.add(temp)
         }
+
+        println("MANA LIST: ${list.joinToString()}")
         return list
     }
-
-
 }
